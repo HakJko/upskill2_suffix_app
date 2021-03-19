@@ -8,6 +8,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * developer Ihar Koshman
+ *
+ * 3/19/2021
+ *
+ * for epam UpSkill_part2
+ */
+
 public class FileController {
 
     private static final Path DIRECTORY = Paths.get("src/main/resources/");
