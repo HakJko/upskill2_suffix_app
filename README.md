@@ -18,8 +18,18 @@ It is a java application that refers to a config file and renames a set of files
 
 _old_name -> new_name_
 
+##### Steps:
+
+- Create a maven project and specify its GAV settings, encoding, language level, etc.
+- Add a dependency to some library for reading and parsing JSON files. (for instance, GSON)
+- Write the code implementing the app specification.
+- Configure maven project to build a runnable jar containing application and its dependencies.
+( add plugin -> maven-assembly-plugin , write in terminal -> mvn assembly:assembly )
+
 ##### Launching
 
-_FileController.java_
+_FileController.java
+    or
+ java -cp target/suffixing-app-1.0-SNAPSHOT-jar-with-dependencies.jar com.epam.ik.FileController (in terminal)_
 
 ***

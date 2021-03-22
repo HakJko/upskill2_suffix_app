@@ -61,12 +61,4 @@ public class FileController {
         Files.move(currentName, targetName, StandardCopyOption.REPLACE_EXISTING);
         System.out.println(currentName + " -> " + targetName);
     }
-
-    public static Path getDIRECTORY() {
-        return DIRECTORY;
-    }
-
-    public static Path getCONFIG() {
-        return CONFIG;
-    }
 }
