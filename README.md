@@ -4,7 +4,7 @@
 
 ***
 
-##### Module 2. SuffixingApp With Maven
+### Module 2. SuffixingApp With Maven
 
 It is a java application that refers to a config file and renames a set of files and renames them adding a suffix 
     specified in the same config.
@@ -33,3 +33,4 @@ _FileController.java
  java -cp target/suffixing-app-1.0-SNAPSHOT-jar-with-dependencies.jar com.epam.ik.FileController (in terminal)_
 
 ***
+
