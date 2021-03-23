@@ -1,3 +1,8 @@
+-------------------
+> The app is compiled by Ihar Koshman
+
+***
+
 ### Module 3. Testing Quadratic Equation
 
 Write and cover with tests a method that solves a quadratic equation.
