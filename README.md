@@ -36,6 +36,8 @@ _Use different logging level. All log entries should contain a date and time inf
 
 ##### Launching
 
+VM options: -Djava.util.logging.config.file=/upskill2_suffix_app/src/main/resources/log.properties
+
 _branch - module04_ 
 
 ***

@@ -9,8 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.*;
 
-import static com.epam.ik.logging.LogMessages.*;
-
 /**
  * developer Ihar Koshman
  *
@@ -27,47 +25,51 @@ public class FileController {
 
     public static void main(String[] args) {
         try {
-            LogManager.getLogManager().readConfiguration();
-            Handler fileHandler = new FileHandler(DIRECTORY.resolve("myJavaLog.log").toString(), true);
-            LOGGER.setUseParentHandlers(false);// or true for output with console
+            Handler fileHandler = new FileHandler(DIRECTORY.resolve("myJavaLog.txt").toString());
             LOGGER.addHandler(fileHandler);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.severe(String.format("Exception for FileHandler: %s", DIRECTORY.resolve("myJavaLog.txt").toString()));
         }
 
-        //System.out.println(System.getProperty("java.util.logging.config.file"));
-        LOGGER.log(Level.INFO, LOG_FILE_CONTROLLER_STARTED);
+        StringBuilder myProperties = getMyProperties();
+        LOGGER.info(String.format("FileController has been started with next properties: %s", myProperties));
 
         Gson gson = new Gson();
 
         try (FileReader fileReader = new FileReader(CONFIG.toString())) {
             JsonReader jsonReader = new JsonReader(fileReader);
             Configuration configuration = gson.fromJson(jsonReader, Configuration.class);
-            LOGGER.log(Level.INFO, LOG_CONFIG_READ);
+
+            LOGGER.info(String.format("'%s' has been read", CONFIG.toString()));
+
             String suffix = configuration.getSuffix();
             String[] fileNames = configuration.getFileNames();
 
             if (checkFilesExisting(fileNames)) {
-                System.out.println("All specified files are exist. Ready to work...");
+                LOGGER.info("All specified files are exist. Ready to work...");
             } else {
-                LOGGER.throwing("FileController", "main", new FileNotFoundException("Specified file or files not found!"));
+                LOGGER.warning(String.format("Specified file or files not found in %s!", DIRECTORY));
             }
 
             for (String fileName : fileNames) {
                 renameFile(DIRECTORY.resolve(fileName), DIRECTORY.resolve(suffix.concat(fileName)));
             }
-            LOGGER.log(Level.WARNING, LOG_RENAMED_FINISHED);
-            LOGGER.log(Level.INFO, LOG_FILE_CONTROLLER_FINISHED);
+
+            LOGGER.info("The renaming process is complete");
+            LOGGER.info("FileController was terminated correctly");
+
+            LOGGER.info(String.format("Summary information: renamed %s files, in DIRECTORY %s", fileNames.length, DIRECTORY));
+
+        } catch (FileNotFoundException e) {
+            LOGGER.severe("File not found" + CONFIG.toString());
+        } catch (IOException e) {
+            LOGGER.severe("Files cannot be renamed in method renameFile" );
         }
-        catch (FileNotFoundException ex) {
-            LOGGER.log(Level.SEVERE, LOG_FILE_NOT_FOUND);
-        }
-        catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, LOG_IO_EXCEPTION);
-        }
+
     }
 
     private static boolean checkFilesExisting(String[] fileNames) {
+        LOGGER.info("Checking for files in the method checkFilesExisting has started");
         for (String fileName : fileNames) {
             if (Files.notExists(DIRECTORY.resolve(fileName))) {
                 return false;
@@ -77,8 +79,23 @@ public class FileController {
     }
 
     private static void renameFile(Path currentName, Path targetName) throws IOException {
-        LOGGER.log(Level.WARNING, LOG_RENAMED_STARTED);
+        LOGGER.info("The renaming process has begun");
         Files.move(currentName, targetName, StandardCopyOption.REPLACE_EXISTING);
-        System.out.println(currentName + " -> " + targetName);
+        LOGGER.info(currentName + " -> " + targetName);
+    }
+
+    private static StringBuilder getMyProperties(){
+        StringBuilder sb = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(DIRECTORY.resolve("log.properties").toString()))) {
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append("  ");
+            }
+        } catch (IOException e) {
+            LOGGER.severe("File not found" + DIRECTORY.resolve("log.properties").toString());
+        }
+        return sb;
     }
 }
