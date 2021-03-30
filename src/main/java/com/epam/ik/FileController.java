@@ -25,10 +25,10 @@ public class FileController {
 
     public static void main(String[] args) {
         try {
-            Handler fileHandler = new FileHandler(DIRECTORY.resolve("myJavaLog.txt").toString());
+            Handler fileHandler = new FileHandler(DIRECTORY.resolve("myJavaLog.log").toString());
             LOGGER.addHandler(fileHandler);
         } catch (IOException e) {
-            LOGGER.severe(String.format("Exception for FileHandler: %s", DIRECTORY.resolve("myJavaLog.txt").toString()));
+            LOGGER.severe(String.format("Exception for FileHandler: %s", DIRECTORY.resolve("myJavaLog.log").toString()));
         }
 
         StringBuilder myProperties = getMyProperties();

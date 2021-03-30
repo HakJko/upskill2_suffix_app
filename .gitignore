@@ -1,10 +1,12 @@
 /.idea
 /target
-*.iml
+/test
 .mtj.tmp/
+*.iml
+*.log
 *.class
 *.jar
 *.war
 *.ear
 *.nar
-/test
+
