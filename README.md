@@ -4,14 +4,16 @@
 
 ***
 
-### Module 4. SuffixingApp Logging
+### Module 5-6. SuffixingApp Structured Logging Specification
 
-Get Suffixing App project from Maven topic. Add logging.
+Get Suffixing App project from Logging topic. Specify structure of its input and output
 
 ##### App Specification
 
-It is a Suffixing App - a small java application that refers to a config file and renames a set of 
-    files and renames them adding a suffix specified in the same config.
+It is a Suffixing App - a small java application that refers to a config file and renames a set of files 
+    and renames them adding a suffix specified in the same config.
+
+_Changes: config file now should be an XML file._
     
 ##### Details:
 
@@ -30,15 +32,31 @@ It is a Suffixing App - a small java application that refers to a config file an
 
 _Use different logging level. All log entries should contain a date and time information as well._
 
+##### Changes:
+
+- When renaming is finished the application should print a document of completed actions.
+    Document should be XML-based. It should contain:
+    - config file name
+    - execution time
+    - list of files with old and new names
+- All the logging entries from previous exercise should become JSON document of some structure. They should contain:
+    - date and time
+    - message
+    - severity label
+    - error info, if its error
+
 ##### Steps:
 
-- Complete the project to meet specifications.
+- Specify structure of the following documents:
+    - Config file
+    - Completed actions document
+    - Log entries.
 
 ##### Launching
 
-VM options: -Djava.util.logging.config.file=/upskill2_suffix_app/src/main/resources/log.properties
+VM options: -Dlog4j2PropertiesXML=src/main/resources/log4j2.xml -DconfigXML=src/main/resources/config.xml -DoutputXML=src/main/resources/output/suffixingApp.xml -DoutputJSON=src/main/resources/output/suffixingApp.json
 
-_branch - module04_ 
+_branch - module05_ 
 
 ***
 

@@ -1,12 +1,42 @@
-/.idea
-/target
-/test
-.mtj.tmp/
-*.iml
-*.log
+### Java template
+# Compiled class file
 *.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Json files
+*.json
+
+# XML files
+*.xml
+
+# Package Files #
 *.jar
 *.war
-*.ear
 *.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.iml
+
+# Directory
+
+/.idea
+/test
+/target
+
+
+# Without config files
+
+!src/main/resources/config.xml
+!src/main/resources/log4j2.xml
+
 
