@@ -16,7 +16,7 @@ public class CreatorGSON {
         FileWriter writer = new FileWriter(System.getProperty("outputJSON"));
 
         for (FileDAO currentFile: data) {
-            writer.write(gson.toJson(currentFile));
+            writer.write(gson.toJson(currentFile) + '\n');
         }
         writer.close();
     }

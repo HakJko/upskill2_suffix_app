@@ -27,7 +27,7 @@ public class CreatorJDOM {
             addChildElement(fileElement, FileDAO.OLD_NAME_TAG, currentFile.getOldName());
             addChildElement(fileElement, FileDAO.NEW_NAME_TAG, currentFile.getNewName());
             addChildElement(fileElement,"DateTime", String.valueOf(myDateObj));
-            addChildElement(fileElement, "ConfigFileName", "config.xml");
+            addChildElement(fileElement, "ConfigFileName", System.getProperty("configXML"));
 
         }
         return doc;

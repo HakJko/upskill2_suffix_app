@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -33,8 +34,18 @@ public class App {
     public static void main(String[] args) {
 
         StringBuilder myProperties = getMyProperties();
-        LOGGER.info(String.format("App has been started with next properties: %s", myProperties));
+        LOGGER.info(String.format("\"App has been started with next properties: %s\"", myProperties));
 
+        LOGGER.info(String.format("ValidatorXML starts up with config: %s, schema: %s",
+                System.getProperty("configXML"),
+                System.getProperty("schemaXML")));
+        try {
+            ValidatorXML.validate();
+        } catch (SAXException e) {
+            LOGGER.error("Check ValidatorXML class, methods: newSchema and validator.validate()");
+        } catch (IOException e) {
+            LOGGER.error(String.format("File not found: %s", System.getProperty("configXML"), e));
+        }
 
         LOGGER.info(String.format("Start reading and analyzing content of %s file", System.getProperty("configXML")));
 
@@ -141,14 +152,14 @@ public class App {
     private static StringBuilder getMyProperties(){
         StringBuilder sb = new StringBuilder();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("log4j2PropertiesXML")))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append(' ');
-            }
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("log4j2Properties")))) {
+            br.lines()
+              .forEach(line -> {
+                  sb.append(line);
+              });
+
         } catch (IOException e) {
-            LOGGER.error(String.format("File not found %s", System.getProperty("log4j2PropertiesXML")), e);
+            LOGGER.error(String.format("File not found %s", System.getProperty("log4j2Properties")), e);
         }
         return sb;
     }

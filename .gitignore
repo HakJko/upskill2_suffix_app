@@ -32,11 +32,13 @@
 /.idea
 /test
 /target
-
+/src/main/resources/logging
 
 # Without config files
 
 !src/main/resources/config.xml
 !src/main/resources/log4j2.xml
+!src/main/resources/schemes/schemaXML.xsd
+
 
 
