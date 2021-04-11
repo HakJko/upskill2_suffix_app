@@ -5,12 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import org.xml.sax.SAXException;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.sql.Timestamp;
 import java.util.*;
 import java.io.*;
 
@@ -19,53 +19,25 @@ import java.io.*;
  *
  * 3/26/2021
  *
- * for epam UpSkill_part2, module 05-06
+ * for epam UpSkill_part2, module 05
  */
 
-public class App {
-
+public class App
+{
     private static String oldNamesFiles = "";
     private static String newNamesFiles = "";
-    private static List<String> filePathArray = new ArrayList<>();
+    private static final List<String> filePathArray = new ArrayList<>();
     private static String suffix = "";
 
-    protected static final Logger LOGGER = LogManager.getLogger(App.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(App.class.getName());
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args)
+    {
         StringBuilder myProperties = getMyProperties();
         LOGGER.info(String.format("\"App has been started with next properties: %s\"", myProperties));
 
-        LOGGER.info(String.format("ValidatorXML starts up with config: %s, schema: %s",
-                System.getProperty("configXML"),
-                System.getProperty("schemaXML")));
         try {
-            ValidatorXML.validate();
-        } catch (SAXException e) {
-            LOGGER.error("Check ValidatorXML class, methods: newSchema and validator.validate()");
-        } catch (IOException e) {
-            LOGGER.error(String.format("File not found: %s", System.getProperty("configXML"), e));
-        }
-
-        LOGGER.info(String.format("Start reading and analyzing content of %s file", System.getProperty("configXML")));
-
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLStreamReader parser;
-        try {
-            parser = factory.createXMLStreamReader(new FileInputStream(System.getProperty("configXML")));
-
-            while (parser.hasNext()) {
-                if (parser.next() == XMLStreamConstants.START_ELEMENT) {
-
-                    if (parser.getLocalName().equals("file")) {
-                        filePathArray.add(parser.getElementText());
-                    }
-
-                    if (parser.getLocalName().equals("suffix")) {
-                        suffix = parser.getElementText();
-                    }
-                }
-            }
+            parsingXML();
         } catch (XMLStreamException e) {
             LOGGER.error("Occurrence of an exception when working with XMLStreamReader parser", e);
         } catch (FileNotFoundException e) {
@@ -75,27 +47,17 @@ public class App {
         LOGGER.info(String.format("%s was read", System.getProperty("configXML")));
 
         List<FileDAO> data = getData(filePathArray);
-
         CreatorJDOM creator = new CreatorJDOM();
         Document doc = creator.createXMLDocument(data);
 
         LOGGER.info("Start writing to the xml file");
-        FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(new File(System.getProperty("outputXML")));
+            XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat().setEncoding("UTF-8"));
+            FileWriter fileWriter = new FileWriter(System.getProperty("outputXML"));
+            outputter.output(doc, fileWriter);
         } catch (IOException e) {
             LOGGER.error(String.format("Unable to create a file in a directory %s. Please create directory",
                     System.getProperty("outputXML")), e);
-        }
-        XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat().setEncoding("UTF-8"));
-        try {
-            if (fileWriter == null) {
-                LOGGER.warn("fileWriter is null");
-                throw new NullPointerException();
-            }
-            outputter.output(doc, fileWriter);
-        } catch (IOException e) {
-            LOGGER.error("Exception in method output. Please check arguments{Document, FileWriter}", e);
         }
 
         LOGGER.info("Start writing to the json file");
@@ -110,53 +72,86 @@ public class App {
         LOGGER.info("The renaming process is complete");
         LOGGER.info("FileController was terminated correctly");
         LOGGER.info(String.format("Summary information: renamed %s files, in DIRECTORY %s", filePathArray.size(),
-                    System.getProperty("directory")));
+                System.getProperty("directory")));
 
     }
 
-    public static List<FileDAO> getData(List<String> filePathArray) {
+    private static void parsingXML() throws FileNotFoundException, XMLStreamException {
+        LOGGER.info(String.format("Start reading and analyzing content of %s file", System.getProperty("configXML")));
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLStreamReader parser;
+        parser = factory.createXMLStreamReader(new FileInputStream(System.getProperty("configXML")));
+
+        while (parser.hasNext()) {
+            if (parser.next() == XMLStreamConstants.START_ELEMENT) {
+                if (parser.getLocalName().equals("filePath")) {
+                    filePathArray.add(parser.getElementText());
+                }
+                if (parser.getLocalName().equals("suffix")) {
+                    suffix = parser.getElementText();
+                }
+            }
+        }
+
+    }
+
+    public static List<FileDAO> getData(List<String> filePathArray)
+    {
         List<FileDAO> daoList = new ArrayList<>();
 
         for (String currentPath : filePathArray) {
             File oldFile = new File(currentPath);
 
-            if (oldFile.exists()) {
+            if (oldFile.exists())
+            {
+                FileDAO myFileObj = new FileDAO();
 
-                FileDAO file = new FileDAO();
-                LOGGER.info(oldFile.getName() + " exists" );
-                oldNamesFiles = oldNamesFiles.concat(" ").concat(oldFile.getName());
-                File newFileName = new File(currentPath.substring(0, currentPath.lastIndexOf('.')) +
-                        suffix + currentPath.substring(currentPath.lastIndexOf('.')));
-                boolean success = oldFile.renameTo(newFileName);
-                LOGGER.info("new name " + newFileName.getName() + " was generated from " +
-                        oldFile.getName() +  " because of the suffix -suffix");
-                newNamesFiles = newNamesFiles.concat(" ").concat(newFileName.getName());
+                File newFileName = renameFiles(oldFile, currentPath);
 
-                file.setOldName(oldFile.getName());
-                file.setNewName(newFileName.getName());
-                daoList.add(file);
+                Timestamp myDateObj = new Timestamp(System.currentTimeMillis());
+                String configPath = System.getProperty("configXML");
 
-                if (success) {
-                    LOGGER.info(oldFile.getName() + " renamed to " + newFileName.getName());
-                } else {
-                    LOGGER.error(String.format("%s didn't renamed successfully", oldFile.getName()));
-                }
+                myFileObj.setOldName(oldFile.getName());
+                myFileObj.setNewName(newFileName.getName());
+                myFileObj.setMyDateObj(myDateObj);
+                myFileObj.setConfigFileName(configPath);
+
+                daoList.add(myFileObj);
 
             } else {
-                LOGGER.error(String.format("%s file didn't exist, file renaming process failed", oldFile.getName()));
+                LOGGER.fatal(String.format("%s file didn't exist, file renaming process failed", oldFile.getName()));
             }
         }
         return daoList;
     }
 
-    private static StringBuilder getMyProperties(){
-        StringBuilder sb = new StringBuilder();
+    private static File renameFiles(File oldFile, String currentPath)
+    {
+        LOGGER.info(oldFile.getName() + " exists" );
+        oldNamesFiles = oldNamesFiles.concat(" ").concat(oldFile.getName());
+        File newFileName = new File(currentPath.substring(0, currentPath.lastIndexOf('.')) +
+                suffix + currentPath.substring(currentPath.lastIndexOf('.')));
 
+        boolean success = oldFile.renameTo(newFileName);
+
+        LOGGER.info("new name " + newFileName.getName() + " was generated from " +
+                oldFile.getName() +  " because of the suffix -suffix");
+        newNamesFiles = newNamesFiles.concat(" ").concat(newFileName.getName());
+
+        if (success) {
+            LOGGER.info(oldFile.getName() + " renamed to " + newFileName.getName());
+        } else {
+            LOGGER.error(String.format("%s didn't renamed successfully", oldFile.getName()));
+        }
+        return newFileName;
+    }
+
+    private static StringBuilder getMyProperties()
+    {
+        StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("log4j2Properties")))) {
             br.lines()
-              .forEach(line -> {
-                  sb.append(line);
-              });
+                    .forEach(sb::append);
 
         } catch (IOException e) {
             LOGGER.error(String.format("File not found %s", System.getProperty("log4j2Properties")), e);

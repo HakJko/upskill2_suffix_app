@@ -1,12 +1,16 @@
 package com.epam.ik;
 
-public class FileDAO {
+import java.sql.Timestamp;
+
+public class FileDAO
+{
+    public static final String OLD_NAME_TAG = "oldName";
+    public static final String NEW_NAME_TAG = "newName";
 
     private String oldName;
     private String newName;
-
-    public static final String OLD_NAME_TAG = "oldName";
-    public static final String NEW_NAME_TAG = "newName";
+    private Timestamp myDateObj;
+    private String configFileName;
 
     public String getOldName() {
         return oldName;
@@ -22,6 +26,22 @@ public class FileDAO {
 
     public void setNewName(String newName) {
         this.newName = newName;
+    }
+
+    public Timestamp getMyDateObj() {
+        return myDateObj;
+    }
+
+    public void setMyDateObj(Timestamp myDateObj) {
+        this.myDateObj = myDateObj;
+    }
+
+    public String getConfigFileName() {
+        return configFileName;
+    }
+
+    public void setConfigFileName(String configFileName) {
+        this.configFileName = configFileName;
     }
 
     @Override

@@ -11,9 +11,6 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Json files
-*.json
-
 # XML files
 *.xml
 
@@ -33,12 +30,13 @@
 /test
 /target
 /src/main/resources/logging
+/src/main/resources/output
+/src/test
 
 # Without config files
 
 !src/main/resources/config.xml
+!src/main/resources/config.json
 !src/main/resources/log4j2.xml
-!src/main/resources/schemes/schemaXML.xsd
-
-
-
+!src/main/resources/schemes/configSchemaXML.xsd
+!src/main/resources/schemes/outputSchemaJSON.json

@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE my-config [
-        <!ELEMENT my-config (suffix, files)>
-        <!ELEMENT files (file+)>
-        <!ELEMENT suffix (#PCDATA)>
-        <!ELEMENT file (#PCDATA)>
-        ]>
 <my-config>
     <suffix>-suffix</suffix>
     <files>
-        <file>src//main//resources//targetFiles//first.txt</file>
-        <file>src//main//resources//targetFiles//second.txt</file>
+        <filePath>src//main//resources//targetFiles//first.txt</filePath>
+        <filePath>src//main//resources//targetFiles//second.txt</filePath>
     </files>
 </my-config>

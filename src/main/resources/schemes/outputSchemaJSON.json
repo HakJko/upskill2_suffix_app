@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Document(schema) about the renaming actions performed",
+  "type": "object",
+
+  "properties": {
+
+    "oldName": {
+      "description": "name file before renaming",
+      "type": "string"
+    },
+
+    "newName": {
+      "description": "name file after renaming",
+      "type": "string"
+    },
+
+    "myDateObj": {
+      "description": "current date and time",
+      "type": "string"
+    },
+
+    "configFileName": {
+      "description": "config file name with path",
+      "type": "string"
+    }
+  }
+}

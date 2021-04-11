@@ -4,7 +4,7 @@
 
 ***
 
-### Module 5. SuffixingApp Structured Logging Specification
+### Module 5  . SuffixingApp Structured Logging Specification
 
 Get Suffixing App project from Logging topic. Specify structure of its input and output
 
@@ -54,9 +54,12 @@ _Use different logging level. All log entries should contain a date and time inf
 
 ##### Launching
 
-VM options:  -Dlog4j2Properties=src/main/resources/log4j2.properties -Ddirectory=src/main/resources -DconfigXML=src/main/resources/config.xml -DoutputXML=src/main/resources/output/suffixingApp.xml -DoutputJSON=src/main/resources/output/suffixingApp.json -DschemaXML=src/main/resources/schemes/schemaXML.xsd
+VM options App:  -Dlog4j2Properties=src/main/resources/log4j2.properties -Ddirectory=src/main/resources -DconfigXML=src/main/resources/config.xml -DoutputXML=src/main/resources/output/suffixingApp.xml -DoutputJSON=src/main/resources/output/suffixingApp.json -DconfigSchemaXML=src/main/resources/schemes/configSchemaXML.xsd -DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
 
-_branch - module05_ 
+App - main class Suffixing app
+AppConversely - inversely proportional App
+SchemaValidation - main class for validate json files
+ValidatorXML - main class for validate xml files
 
 ***
 

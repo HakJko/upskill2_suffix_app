@@ -9,14 +9,14 @@ import java.util.List;
 
 public class CreatorGSON {
 
-    public void writeJSON(List<FileDAO> data) throws IOException {
-
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Gson gson = builder.create();
+    public void writeJSON(List<FileDAO> data)
+            throws IOException
+    {
+        Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
         FileWriter writer = new FileWriter(System.getProperty("outputJSON"));
 
         for (FileDAO currentFile: data) {
-            writer.write(gson.toJson(currentFile) + '\n');
+            writer.write(gson.toJson(currentFile));
         }
         writer.close();
     }
