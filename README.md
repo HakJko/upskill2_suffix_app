@@ -54,10 +54,22 @@ _Use different logging level. All log entries should contain a date and time inf
 
 ##### Launching
 
-VM options App:  -Dlog4j2Properties=src/main/resources/log4j2.properties -Ddirectory=src/main/resources/targetFiles -DconfigXML=src/main/resources/config.xml -DoutputXML=src/main/resources/output/suffixingApp.xml -DoutputJSON=src/main/resources/output/suffixingApp.json -DconfigSchemaXML=src/main/resources/schemes/configSchemaXML.xsd -DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
+VM options App:  
+-Ddirectory=src/main/resources/targetFiles
+-DconfigXML=src/main/resources/config.xml
+-DconfigSchemaXML=src/main/resources/schemes/configSchemaXML.xsd
+-DoutputXML=src/main/resources/output/suffixingApp.xml
+-DoutputSchemaXML=src/main/resources/schemes/outputSchemaXML.xsd
+-DoutputJSON=src/main/resources/output/suffixingApp.json
+-DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
+-DJSONLog=src/main/resources/logging/JSONLog.json
+-DschemaLog=src/main/resources/schemes/JsonLogSchema.json
+-DconfigJSON=src/main/resources/config.json
+-DconfigSchemaJson=src/main/resources/schemes/configSchemaJSON.json
+-DschemaJSONv4="http://json-schema.org/draft-04/schema#"
+-DschemaJSONv4_Id_elem="$schema"
 
 App - main class Suffixing app
 AppConversely - inversely proportional App
 
 ***
-

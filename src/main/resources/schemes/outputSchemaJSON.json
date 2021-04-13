@@ -1,36 +1,39 @@
 {
-  "definitions": {},
   "$schema": "http://json-schema.org/draft-07/schema#",
 
   "title": "Root",
   "type": "object",
   "properties": {
+
     "suffixingApp": {
-      "title": "Suffixingapp",
+      "title": "SuffixingApp",
       "type": "array",
+
       "items":{
         "title": "Items",
         "type": "object",
+
         "properties": {
+
           "oldName": {
-            "title": "Oldname",
-            "type": "string",
-            "pattern": "^.*$"
+            "title": "oldName",
+            "type": "string"
           },
+
           "newName": {
-            "title": "Newname",
-            "type": "string",
-            "pattern": "^.*$"
+            "title": "newName",
+            "type": "string"
           },
+
           "dateTime": {
-            "title": "Datetime",
+            "title": "dateTime",
             "type": "string",
-            "pattern": "^.*$"
+            "pattern": "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\.\\d+"
           },
+
           "configFileName": {
-            "title": "Configfilename",
-            "type": "string",
-            "pattern": "^.*$"
+            "title": "configFileName",
+            "type": "string"
           }
         }
       }

@@ -13,8 +13,8 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
 public class ValidationUtils
 {
-    private static final String JSON_V4_SCHEMA_IDENTIFIER = "http://json-schema.org/draft-04/schema#";
-    private static final String JSON_SCHEMA_IDENTIFIER_ELEMENT = "$schema";
+    private static final String JSON_V4_SCHEMA_IDENTIFIER = System.getProperty("schemaJSONv4");
+    private static final String JSON_SCHEMA_IDENTIFIER_ELEMENT = System.getProperty("schemaJSONv4_Id_elem");
 
     public static JsonNode getJsonNode(File jsonFile)
             throws IOException

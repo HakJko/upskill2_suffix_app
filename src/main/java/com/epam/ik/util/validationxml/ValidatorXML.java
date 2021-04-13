@@ -13,11 +13,10 @@ import java.io.IOException;
 
 public class ValidatorXML
 {
-    private static final String CONFIG_XML = "src/main/resources/config.xml";
-    private static final String CONFIG_SCHEMA_XML = "src/main/resources/schemes/configSchemaXML.xsd";
-
-    private static final String OUTPUT_XML = "src/main/resources/output/suffixingApp.xml";
-    private static final String OUTPUT_SCHEMA_XML = "src/main/resources/schemes/outputSchemaXML.xsd";
+    private static final String CONFIG_XML = System.getProperty("configXML");
+    private static final String CONFIG_SCHEMA_XML = System.getProperty("configSchemaXML");
+    private static final String OUTPUT_XML = System.getProperty("outputXML");
+    private static final String OUTPUT_SCHEMA_XML = System.getProperty("outputSchemaXML");
 
     public static void validateConfig()
             throws SAXException, IOException

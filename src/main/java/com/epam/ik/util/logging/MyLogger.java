@@ -8,11 +8,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 
-import static com.epam.ik.util.logging.MyEnumLevels.*;
+import static com.epam.ik.util.logging.MyLevels.*;
 
 public class MyLogger
 {
-    private static final String LOG_FILE = "src/main/resources/logging/JSONLog.json";
+    private static final String LOG_FILE = System.getProperty("JSONLog");
     public static JsonWriter jsonWriter;
 
     static {

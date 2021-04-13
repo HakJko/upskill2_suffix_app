@@ -1,6 +1,6 @@
 package com.epam.ik.util.logging;
 
-public enum MyEnumLevels
+public enum MyLevels
 {
     INFO, ERROR
 }

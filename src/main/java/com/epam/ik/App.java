@@ -73,39 +73,8 @@ public class App
                     System.getProperty("outputJSON")), e);
         }
 
-
-
-        MyLogger.info("The renaming process is complete");
-        MyLogger.info("FileController was terminated correctly");
-        MyLogger.info(String.format("Summary information: renamed %s files, in DIRECTORY %s", filePathArray.size(),
-                System.getProperty("directory")));
-
-        MyLogger.info("ValidatorXML starts working with xml and xsd");
-        try {
-            ValidatorXML.validateConfig();
-            MyLogger.info("Validate config was successful");
-            ValidatorXML.validateOutput();
-            MyLogger.info("Validate output file was successful");
-
-        } catch (SAXException e) {
-            MyLogger.error("Check ValidatorXML class, methods: newSchema and validate()", e);
-        } catch (IOException e) {
-            MyLogger.error("File not found", e);
-        }
-
-        MyLogger.info("Start validate json files");
-        try {
-            SchemesValidation.checkValidConfig();
-            MyLogger.info("Validate config was successful");
-            SchemesValidation.checkValidOutput();
-            MyLogger.info("Validate output file was successful");
-
-            closeJsonWriter();
-
-            SchemesValidation.checkValidLog();
-        } catch (IOException | ProcessingException e) {
-            e.printStackTrace();
-        }
+        validateXMLFiles();
+        validateJsonFiles();
     }
 
     public static List<FileDAO> getData(List<String> filePathArray)
@@ -199,5 +168,47 @@ public class App
                     new RuntimeException());
         }
         return newFileName;
+    }
+
+    private static void validateXMLFiles()
+    {
+        MyLogger.info("ValidatorXML starts working with xml and xsd");
+        try {
+            ValidatorXML.validateConfig();
+            MyLogger.info("Validate configXML was successful");
+            ValidatorXML.validateOutput();
+            MyLogger.info("Validate output xml file was successful");
+
+        } catch (SAXException e) {
+            MyLogger.error("Check ValidatorXML class, methods: newSchema and validate()", e);
+        } catch (IOException e) {
+            MyLogger.error("File not found", e);
+        }
+    }
+
+    private static void validateJsonFiles()
+    {
+        MyLogger.info("Start validate json files");
+        try {
+            SchemesValidation.checkValidConfig();
+            MyLogger.info("Validate config Json was successful");
+            SchemesValidation.checkValidOutput();
+            MyLogger.info("Validate output Json file was successful");
+
+            summaryLog();
+            closeJsonWriter();
+
+            SchemesValidation.checkValidLog();
+        } catch (IOException | ProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void summaryLog()
+    {
+        MyLogger.info("The renaming process is complete");
+        MyLogger.info("App was terminated correctly");
+        MyLogger.info(String.format("Summary information: renamed %s files, in DIRECTORY %s", filePathArray.size(),
+                System.getProperty("directory")));
     }
 }
