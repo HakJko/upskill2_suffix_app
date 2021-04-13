@@ -54,12 +54,10 @@ _Use different logging level. All log entries should contain a date and time inf
 
 ##### Launching
 
-VM options App:  -Dlog4j2Properties=src/main/resources/log4j2.properties -Ddirectory=src/main/resources -DconfigXML=src/main/resources/config.xml -DoutputXML=src/main/resources/output/suffixingApp.xml -DoutputJSON=src/main/resources/output/suffixingApp.json -DconfigSchemaXML=src/main/resources/schemes/configSchemaXML.xsd -DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
+VM options App:  -Dlog4j2Properties=src/main/resources/log4j2.properties -Ddirectory=src/main/resources/targetFiles -DconfigXML=src/main/resources/config.xml -DoutputXML=src/main/resources/output/suffixingApp.xml -DoutputJSON=src/main/resources/output/suffixingApp.json -DconfigSchemaXML=src/main/resources/schemes/configSchemaXML.xsd -DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
 
 App - main class Suffixing app
 AppConversely - inversely proportional App
-SchemaValidation - main class for validate json files
-ValidatorXML - main class for validate xml files
 
 ***
 

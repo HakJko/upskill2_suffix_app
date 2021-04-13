@@ -1,4 +1,4 @@
-package com.epam.ik.validationjson;
+package com.epam.ik.util.validationjson;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class ValidationUtils
         return JsonLoader.fromFile(jsonFile);
     } // getJsonNode(File) ends
 
-    public static JsonSchema getSchemaNode(File schemaFile)
+    public static JsonSchema _getSchemaNode(File schemaFile)
             throws IOException, ProcessingException
     {
         final JsonNode schemaNode = getJsonNode(schemaFile);
@@ -40,7 +40,7 @@ public class ValidationUtils
     public static boolean isJsonValid(File schemaFile, File jsonFile)
             throws ProcessingException, IOException
     {
-        final JsonSchema schemaNode = getSchemaNode(schemaFile);
+        final JsonSchema schemaNode = _getSchemaNode(schemaFile);
         final JsonNode jsonNode = getJsonNode(jsonFile);
         return isJsonValid(schemaNode, jsonNode);
     } // validateJson(Node) ends

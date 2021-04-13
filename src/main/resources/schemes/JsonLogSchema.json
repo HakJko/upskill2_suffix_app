@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Log(schema) about the renaming actions performed",
+  "type": "object",
+
+  "properties": {
+
+    "log": {
+      "type": "array",
+
+      "items": {
+        "type": "object",
+
+        "properties":{
+
+          "dateTime": {
+            "description": "Program execution time",
+            "type": "string"
+          },
+
+          "message": {
+            "description": "logging information",
+            "type": "string"
+          },
+
+          "severityLabel": {
+            "description": "Level logging",
+            "type": "string",
+            "enum": ["INFO", "ERROR"]
+          }
+        }
+      }
+    }
+  }
+}

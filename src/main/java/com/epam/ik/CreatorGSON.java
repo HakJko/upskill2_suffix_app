@@ -1,23 +1,29 @@
 package com.epam.ik;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonWriter;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
-public class CreatorGSON {
-
-    public void writeJSON(List<FileDAO> data)
+public class CreatorGSON
+{
+    public void writeJSON(List<FileDAO> data)//Streaming API: pluses performance and memory, disadvantage hard to use
             throws IOException
     {
-        Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
-        FileWriter writer = new FileWriter(System.getProperty("outputJSON"));
+        JsonWriter writer = new JsonWriter(new FileWriter(System.getProperty("outputJSON")));
+        writer.setIndent("  ");
+        writer.beginObject().name("suffixingApp").beginArray();
 
         for (FileDAO currentFile: data) {
-            writer.write(gson.toJson(currentFile));
+            writer.beginObject();
+            writer.name("oldName").value(currentFile.getOldName());
+            writer.name("newName").value(currentFile.getNewName());
+            writer.name("dateTime").value(String.valueOf(currentFile.getMyDateObj()));
+            writer.name("configFileName").value(currentFile.getConfigFileName());
+            writer.endObject();
         }
+        writer.endArray().endObject();
         writer.close();
     }
+
 }

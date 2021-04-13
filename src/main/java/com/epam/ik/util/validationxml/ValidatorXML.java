@@ -1,7 +1,5 @@
-package com.epam.ik.validationxml;
+package com.epam.ik.util.validationxml;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -20,24 +18,6 @@ public class ValidatorXML
 
     private static final String OUTPUT_XML = "src/main/resources/output/suffixingApp.xml";
     private static final String OUTPUT_SCHEMA_XML = "src/main/resources/schemes/outputSchemaXML.xsd";
-
-    private static final Logger LOGGER = LogManager.getLogger(ValidatorXML.class.getName());
-
-    public static void main(String[] args)
-    {
-        LOGGER.info("ValidatorXML starts working with xml and xsd");
-        try {
-            ValidatorXML.validateConfig();
-            LOGGER.info("Validate config was successful");
-            ValidatorXML.validateOutput();
-            LOGGER.info("Validate output file was successful");
-
-        } catch (SAXException e) {
-            LOGGER.error("Check ValidatorXML class, methods: newSchema and validate()");
-        } catch (IOException e) {
-            LOGGER.error("File not found");
-        }
-    }
 
     public static void validateConfig()
             throws SAXException, IOException

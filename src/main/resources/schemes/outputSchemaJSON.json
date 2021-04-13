@@ -1,28 +1,40 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Document(schema) about the renaming actions performed",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+
+  "title": "Root",
   "type": "object",
-
   "properties": {
+    "suffixingApp": {
+      "title": "Suffixingapp",
+      "type": "array",
+      "items":{
+        "title": "Items",
+        "type": "object",
+        "properties": {
+          "oldName": {
+            "title": "Oldname",
+            "type": "string",
+            "pattern": "^.*$"
+          },
+          "newName": {
+            "title": "Newname",
+            "type": "string",
+            "pattern": "^.*$"
+          },
+          "dateTime": {
+            "title": "Datetime",
+            "type": "string",
+            "pattern": "^.*$"
+          },
+          "configFileName": {
+            "title": "Configfilename",
+            "type": "string",
+            "pattern": "^.*$"
+          }
+        }
+      }
 
-    "oldName": {
-      "description": "name file before renaming",
-      "type": "string"
-    },
-
-    "newName": {
-      "description": "name file after renaming",
-      "type": "string"
-    },
-
-    "myDateObj": {
-      "description": "current date and time",
-      "type": "string"
-    },
-
-    "configFileName": {
-      "description": "config file name with path",
-      "type": "string"
     }
   }
 }
