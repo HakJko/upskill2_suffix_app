@@ -1,5 +1,6 @@
-package com.epam.ik;
+package com.epam.ik.service;
 
+import com.epam.ik.entity.FileDAO;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.*;
@@ -7,6 +8,9 @@ import java.util.List;
 
 public class CreatorGSON
 {
+    public CreatorGSON() {
+    }
+
     public void writeJSON(List<FileDAO> data)//Streaming API: pluses performance and memory, disadvantage hard to use
             throws IOException
     {

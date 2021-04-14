@@ -1,5 +1,6 @@
-package com.epam.ik;
+package com.epam.ik.service;
 
+import com.epam.ik.entity.FileDAO;
 import org.jdom2.Document;
 import org.jdom2.Element;
 

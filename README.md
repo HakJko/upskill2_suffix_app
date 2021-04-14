@@ -4,14 +4,14 @@
 
 ***
 
-### Module 5  . SuffixingApp Structured Logging Specification
+### Module 6  . SuffixingApp Structured Logging Specification
 
-Get Suffixing App project from Logging topic. Specify structure of its input and output
+Get Suffixing App project from Logging topic. Make its output structured.
 
 ##### App Specification
 
-It is a Suffixing App - a small java application that refers to a config file and renames a set of files 
-    and renames them adding a suffix specified in the same config.
+It is a Suffixing App - a small java application that refers to a config file and renames a set of files and 
+  renames them adding a suffix specified in the same config.
 
 _Changes: config file now should be an XML file._
     
@@ -62,8 +62,6 @@ VM options App:
 -DoutputSchemaXML=src/main/resources/schemes/outputSchemaXML.xsd
 -DoutputJSON=src/main/resources/output/suffixingApp.json
 -DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
--DJSONLog=src/main/resources/logging/JSONLog.json
--DschemaLog=src/main/resources/schemes/JsonLogSchema.json
 -DconfigJSON=src/main/resources/config.json
 -DconfigSchemaJson=src/main/resources/schemes/configSchemaJSON.json
 -DschemaJSONv4="http://json-schema.org/draft-04/schema#"

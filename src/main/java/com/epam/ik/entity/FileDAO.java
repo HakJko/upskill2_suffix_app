@@ -1,4 +1,4 @@
-package com.epam.ik;
+package com.epam.ik.entity;
 
 import java.sql.Timestamp;
 

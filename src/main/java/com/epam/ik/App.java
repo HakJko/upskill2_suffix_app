@@ -1,9 +1,17 @@
 package com.epam.ik;
 
-import com.epam.ik.util.logging.MyLogger;
+import com.epam.ik.entity.FileDAO;
+import com.epam.ik.entity.LogJson;
+import com.epam.ik.entity.LogJsonExc;
+import com.epam.ik.service.CreatorGSON;
+import com.epam.ik.service.CreatorJDOM;
 import com.epam.ik.util.validationjson.SchemesValidation;
 import com.epam.ik.util.validationxml.ValidatorXML;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -17,64 +25,104 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.io.*;
 
-import static com.epam.ik.util.logging.MyLogger.jsonWriter;
+import static com.epam.ik.util.logging.MyLevels.*;
 
 /**
- * developer Ihar Koshman
+ * @author
+ * Ihar Koshman
  *
- * 4/13/2021
+ * 4/14/2021
  *
- * for epam UpSkill_part2, module 05
+ * for epam UpSkill_part2
+ *
+ * @version
+ * module 06
  */
 
 public class App
 {
+    private static final Logger LOGGER = LogManager.getLogger(App.class.getName());
+    private static final List<String> FILE_PATH_ARRAY = new ArrayList<>();
     private static String oldNamesFiles = "";
     private static String newNamesFiles = "";
-    private static final List<String> filePathArray = new ArrayList<>();
     private static String suffix = "";
+
+    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
 
     public static void main(String[] args)
     {
-        startLogging();
-        MyLogger.info("===================Suffixing App starts working===================");
-        MyLogger.info(System.getProperties().toString());
+        LOGGER.info(gson.toJson(new LogJson(
+                "______________________Suffixing App starts working______________________",
+                INFO)));
+        LOGGER.info(gson.toJson(new LogJson(System.getProperties().toString(), INFO)));
 
         try {
             parsingXML();
-        } catch (XMLStreamException e) {
-            MyLogger.error("Occurrence of an exception when working with XMLStreamReader parser", e);
-        } catch (FileNotFoundException e) {
-            MyLogger.error(String.format("File not found - %s. Config cannot be read!", System.getProperty("configXML")), e);
-        }
 
-        MyLogger.info(String.format("%s was read", System.getProperty("configXML")));
+            LOGGER.info(gson.toJson(
+                    new LogJson(
+                            String.format("%s was read", System.getProperty("configXML")),
+                            INFO)));
 
-        List<FileDAO> data = getData(filePathArray);
-        CreatorJDOM creator = new CreatorJDOM();
-        Document doc = creator.createXMLDocument(data);
+            List<FileDAO> data = getData(FILE_PATH_ARRAY);
+            CreatorJDOM creator = new CreatorJDOM();
+            Document doc = creator.createXMLDocument(data);
 
-        MyLogger.info("Start writing to the xml file");
-        try {
+            LOGGER.info(gson.toJson(
+                    new LogJson(
+                            "Start writing to the xml file",
+                            INFO)));
             XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat().setEncoding("UTF-8"));
             FileWriter fileWriter = new FileWriter(System.getProperty("outputXML"));
             outputter.output(doc, fileWriter);
+
+            LOGGER.info(gson.toJson(
+                    new LogJson(
+                            "Start writing to the json file",
+                            INFO)));
+            CreatorGSON gsonCreator = new CreatorGSON();
+            try {
+                gsonCreator.writeJSON(data);
+            } catch (IOException e) {
+                LOGGER.error(gson.toJson(
+                        new LogJsonExc(
+                                String.format("Error in %s, check %s", "gsonCreator.writeJSON(data)",
+                                        System.getProperty("outputJSON")),
+                                INFO,
+                                e)
+                ));
+            }
+            validateXMLFiles();
+            validateJsonFiles();
+
+        } catch (XMLStreamException e) {
+            LOGGER.error(gson.toJson(
+                    new LogJsonExc(
+                            "Occurrence of an exception when working with XMLStreamReader parser",
+                            ERROR,
+                            e)
+            ));
+
+        } catch (FileNotFoundException e) {
+            LOGGER.error(gson.toJson(
+                    new LogJsonExc(
+                            String.format("File not found - %s. Config cannot be read!",
+                                    System.getProperty("configXML")),
+                            ERROR,
+                            e)
+            ));
         } catch (IOException e) {
-            MyLogger.error(String.format("Unable to create a file in a directory %s. Please create directory",
-                    System.getProperty("outputXML")), e);
+            LOGGER.error(gson.toJson(
+                    new LogJsonExc(
+                            String.format("Unable to create a file in a directory %s. Please create directory",
+                                    System.getProperty("outputXML")),
+                            ERROR,
+                            e)
+            ));
         }
 
-        MyLogger.info("Start writing to the json file");
-        CreatorGSON gsonCreator = new CreatorGSON();
-        try {
-            gsonCreator.writeJSON(data);
-        } catch (IOException e) {
-            MyLogger.error(String.format("Error in %s, check %s", "gsonCreator.writeJSON(data)",
-                    System.getProperty("outputJSON")), e);
-        }
+        summaryLog();
 
-        validateXMLFiles();
-        validateJsonFiles();
     }
 
     public static List<FileDAO> getData(List<String> filePathArray)
@@ -99,49 +147,44 @@ public class App
                 daoList.add(fileDAO);
 
             } else {
-                MyLogger.error(String.format("%s file didn't exist, file renaming process failed", oldFile.getName()),
-                        new NullPointerException());
+                try {
+                    throw new FileNotFoundException();
+                } catch (FileNotFoundException e) {
+                    LOGGER.error(gson.toJson(
+                            new LogJsonExc(
+                                    String.format("%s file didn't exist, file renaming process failed",
+                                            oldFile.getName()),
+                                    ERROR,
+                                    e)
+                    ));
+                    System.exit(0);
+                }
             }
         }
         return daoList;
     }
 
-    public static void startLogging()
-    {
-        jsonWriter.setIndent("  ");
-        try {
-            jsonWriter.beginObject().name("log");
-            jsonWriter.beginArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void closeJsonWriter()
-    {
-        try {
-            jsonWriter.endArray();
-            jsonWriter.endObject();
-            jsonWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private static void parsingXML()
             throws FileNotFoundException, XMLStreamException
     {
-        MyLogger.info(String.format("Start reading and analyzing content of %s file", System.getProperty("configXML")));
+        LOGGER.info(gson.toJson(
+                new LogJson(
+                        String.format("Start reading and analyzing content of %s file", System.getProperty("configXML")),
+                        INFO)));
+
         XMLInputFactory factory = XMLInputFactory.newInstance();
         XMLStreamReader parser;
         parser = factory.createXMLStreamReader(new FileInputStream(System.getProperty("configXML")));
 
         while (parser.hasNext()) {
-            if (parser.next() == XMLStreamConstants.START_ELEMENT) {
-                if (parser.getLocalName().equals("filePath")) {
-                    filePathArray.add(parser.getElementText());
+            if (parser.next() == XMLStreamConstants.START_ELEMENT)
+            {
+                if (parser.getLocalName().equals("filePath"))
+                {
+                    FILE_PATH_ARRAY.add(parser.getElementText());
                 }
-                if (parser.getLocalName().equals("suffix")) {
+                if (parser.getLocalName().equals("suffix"))
+                {
                     suffix = parser.getElementText();
                 }
             }
@@ -150,65 +193,94 @@ public class App
 
     private static File renameFiles(File oldFile, String currentPath)
     {
-        MyLogger.info(oldFile.getName() + " exists" );
+        LOGGER.info(gson.toJson(
+                new LogJson(
+                        oldFile.getName() + " exists",
+                        INFO)));
+
         oldNamesFiles = oldNamesFiles.concat(" ").concat(oldFile.getName());
         File newFileName = new File(currentPath.substring(0, currentPath.lastIndexOf('.')) +
                 suffix + currentPath.substring(currentPath.lastIndexOf('.')));
 
         boolean success = oldFile.renameTo(newFileName);
 
-        MyLogger.info("new name " + newFileName.getName() + " was generated from " +
-                oldFile.getName() +  " because of the suffix -suffix");
+        LOGGER.info(gson.toJson(
+                new LogJson(
+                        "new name " + newFileName.getName() + " was generated from " + oldFile.getName() +
+                                " because of the suffix -suffix",
+                        INFO)));
+
         newNamesFiles = newNamesFiles.concat(" ").concat(newFileName.getName());
 
-        if (success) {
-            MyLogger.info(oldFile.getName() + " renamed to " + newFileName.getName());
+        if (success)
+        {
+            LOGGER.info(gson.toJson(
+                    new LogJson(oldFile.getName() + " renamed to " + newFileName.getName(), INFO)));
         } else {
-            MyLogger.error(String.format("%s didn't renamed successfully", oldFile.getName()),
-                    new RuntimeException());
+            try {
+                throw new RuntimeException();
+            } catch (RuntimeException e) {
+                LOGGER.error(gson.toJson(
+                        new LogJsonExc(
+                                String.format("%s did not renamed successfully", oldFile.getName()),
+                                ERROR,
+                                e)
+                ));
+            }
+            System.exit(0);
         }
         return newFileName;
     }
 
     private static void validateXMLFiles()
     {
-        MyLogger.info("ValidatorXML starts working with xml and xsd");
+        LOGGER.info(gson.toJson(
+                new LogJson("ValidatorXML starts working with xml and xsd", INFO)));
         try {
             ValidatorXML.validateConfig();
-            MyLogger.info("Validate configXML was successful");
+            LOGGER.info(gson.toJson(
+                    new LogJson("Validate configXML was successful", INFO)));
+
             ValidatorXML.validateOutput();
-            MyLogger.info("Validate output xml file was successful");
+            LOGGER.info(gson.toJson(
+                    new LogJson("Validate output xml file was successful", INFO)));
 
         } catch (SAXException e) {
-            MyLogger.error("Check ValidatorXML class, methods: newSchema and validate()", e);
+            LOGGER.error(gson.toJson(
+                    new LogJsonExc("Check ValidatorXML class, methods: newSchema and validate()", ERROR, e)));
         } catch (IOException e) {
-            MyLogger.error("File not found", e);
+            LOGGER.error(gson.toJson(
+                    new LogJsonExc("File not found", ERROR, e)));
         }
     }
 
     private static void validateJsonFiles()
     {
-        MyLogger.info("Start validate json files");
+        LOGGER.info(gson.toJson(
+                new LogJson("Start validate json files", INFO)));
         try {
             SchemesValidation.checkValidConfig();
-            MyLogger.info("Validate config Json was successful");
             SchemesValidation.checkValidOutput();
-            MyLogger.info("Validate output Json file was successful");
-
-            summaryLog();
-            closeJsonWriter();
-
-            SchemesValidation.checkValidLog();
         } catch (IOException | ProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error(gson.toJson(
+                    new LogJsonExc(
+                            "Check methods and files for json",
+                            ERROR,
+                            e)
+            ));
         }
     }
 
     private static void summaryLog()
     {
-        MyLogger.info("The renaming process is complete");
-        MyLogger.info("App was terminated correctly");
-        MyLogger.info(String.format("Summary information: renamed %s files, in DIRECTORY %s", filePathArray.size(),
-                System.getProperty("directory")));
+        LOGGER.info(gson.toJson(
+                new LogJson("The renaming process is complete", INFO)));
+        LOGGER.info(gson.toJson(
+                new LogJson("App was terminated correctly", INFO)));
+        LOGGER.info(gson.toJson(
+                new LogJson(
+                        String.format("Summary information: renamed %s files, in DIRECTORY %s", FILE_PATH_ARRAY.size(),
+                                System.getProperty("directory")),
+                        INFO)));
     }
 }
