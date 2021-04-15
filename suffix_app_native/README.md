@@ -4,6 +4,10 @@
 
 ***
 
+##### Details:
+
+The application captures the work with its own logger
+
 
 ##### Launching
 
