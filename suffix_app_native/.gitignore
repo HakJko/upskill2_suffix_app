@@ -1,0 +1,12 @@
+/.idea
+/target
+/suffixing-app.iml
+/test
+.mtj.tmp/
+*.iml
+*.log
+*.class
+*.jar
+*.war
+*.ear
+*.nar
