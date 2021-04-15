@@ -1,0 +1,16 @@
+{
+  "suffixingApp": [
+    {
+      "oldName": "first.txt",
+      "newName": "first-suffix.txt",
+      "dateTime": "2021-04-14 18:05:31.608",
+      "configFileName": "src/main/resources/config.xml"
+    },
+    {
+      "oldName": "second.txt",
+      "newName": "second-suffix.txt",
+      "dateTime": "2021-04-14 18:05:31.61",
+      "configFileName": "src/main/resources/config.xml"
+    }
+  ]
+}
