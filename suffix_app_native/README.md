@@ -4,14 +4,16 @@
 
 ***
 
-### Module 4. SuffixingApp Logging
+### Module 5  . SuffixingApp Structured Logging Specification
 
-Get Suffixing App project from Maven topic. Add logging.
+Get Suffixing App project from Logging topic. Specify structure of its input and output
 
 ##### App Specification
 
-It is a Suffixing App - a small java application that refers to a config file and renames a set of 
-    files and renames them adding a suffix specified in the same config.
+It is a Suffixing App - a small java application that refers to a config file and renames a set of files 
+    and renames them adding a suffix specified in the same config.
+
+_Changes: config file now should be an XML file._
     
 ##### Details:
 
@@ -30,14 +32,46 @@ It is a Suffixing App - a small java application that refers to a config file an
 
 _Use different logging level. All log entries should contain a date and time information as well._
 
+##### Changes:
+
+- When renaming is finished the application should print a document of completed actions.
+    Document should be XML-based. It should contain:
+    - config file name
+    - execution time
+    - list of files with old and new names
+- All the logging entries from previous exercise should become JSON document of some structure. They should contain:
+    - date and time
+    - message
+    - severity label
+    - error info, if its error
+
 ##### Steps:
 
-- Complete the project to meet specifications.
+- Specify structure of the following documents:
+    - Config file
+    - Completed actions document
+    - Log entries.
 
+<<<<<<< HEAD:suffix_app_native/README.md
+=======
 ##### Launching
 
-VM options: -Djava.util.logging.config.file=/upskill2_suffix_app/src/main/resources/log.properties
+VM options App:  
+-Ddirectory=src/main/resources/targetFiles
+-DconfigXML=src/main/resources/config.xml
+-DconfigSchemaXML=src/main/resources/schemes/configSchemaXML.xsd
+-DoutputXML=src/main/resources/output/suffixingApp.xml
+-DoutputSchemaXML=src/main/resources/schemes/outputSchemaXML.xsd
+-DoutputJSON=src/main/resources/output/suffixingApp.json
+-DoutputSchemaJSON=src/main/resources/schemes/outputSchemaJSON.json
+-DJSONLog=src/main/resources/logging/JSONLog.json
+-DschemaLog=src/main/resources/schemes/JsonLogSchema.json
+-DconfigJSON=src/main/resources/config.json
+-DconfigSchemaJson=src/main/resources/schemes/configSchemaJSON.json
+-DschemaJSONv4="http://json-schema.org/draft-04/schema#"
+-DschemaJSONv4_Id_elem="$schema"
 
-_branch - module04_ 
+App - main class Suffixing app
+AppConversely - inversely proportional App
 
 ***

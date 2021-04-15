@@ -1,4 +1,4 @@
 {
-    "suffix":"new_",
-    "fileNames":["first.txt","second.txt","third.txt"]
+  "suffix": "-suffix",
+  "filesPath": ["src//main//resources//targetFiles//first.txt", "src//main//resources//targetFiles//second.txt"]
 }
