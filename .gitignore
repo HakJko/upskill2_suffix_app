@@ -34,7 +34,6 @@
 /src/test
 
 # Without config files
-
 !src/main/resources/config.xml
 !src/main/resources/config.json
 !src/main/resources/schemes/configSchemaXML.xsd
