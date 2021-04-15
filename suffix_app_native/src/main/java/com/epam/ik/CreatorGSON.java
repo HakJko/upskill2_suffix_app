@@ -7,6 +7,9 @@ import java.util.List;
 
 public class CreatorGSON
 {
+    public CreatorGSON() {
+    }
+
     public void writeJSON(List<FileDAO> data)//Streaming API: pluses performance and memory, disadvantage hard to use
             throws IOException
     {

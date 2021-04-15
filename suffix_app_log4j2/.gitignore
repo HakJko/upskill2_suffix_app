@@ -1,0 +1,43 @@
+### Java template
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# XML files
+*.xml
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.iml
+
+# Directory
+
+/.idea
+/test
+/target
+/src/main/resources/logging
+/src/main/resources/output
+/src/test
+
+# Without config files
+
+!src/main/resources/config.xml
+!src/main/resources/config.json
+!src/main/resources/schemes/configSchemaXML.xsd
+!src/main/resources/schemes/outputSchemaJSON.json
+!src/main/resources/output/suffixingApp.json
+!src/main/resources/output/suffixingApp.xml
