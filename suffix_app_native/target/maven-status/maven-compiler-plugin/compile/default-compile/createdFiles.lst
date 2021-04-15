@@ -1,8 +1,0 @@
-com\epam\ik\AppConversely.class
-com\epam\ik\CreatorGSON.class
-com\epam\ik\FileDAO.class
-com\epam\ik\validationjson\ValidationUtils.class
-com\epam\ik\validationxml\ValidatorXML.class
-com\epam\ik\CreatorJDOM.class
-com\epam\ik\validationjson\SchemaValidation.class
-com\epam\ik\App.class
